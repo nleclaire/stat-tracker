@@ -6,12 +6,14 @@ There's an app known as [Garmin Connect](https://connect.garmin.com/) which is a
 
 I am too cheap to buy a Garmin watch.
 
-Enter stat-tracker - the powerful new app written in python using the django framework.
+Enter stat-tracker - the powerful new app written in python using [django](https://www.djangoproject.com/).
 
 ## Project spec:
 
 ```
-Stat tracker will be a web app that allows users to view their running progress over time based on data collected by a running watch, as well as enabling users to add runs manually.
+Stat tracker will be a web app that allows users to view their running progress over time.
+
+Thw information will be built from data collected by a running watch, users will have the ability to add runs manually or upload a file for parsing.
 
 Once users are logged in, they will be able to view their run history, see graphs on stats like splits, distance, and speed, etc. over time.
 ```
