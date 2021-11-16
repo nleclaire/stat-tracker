@@ -1,0 +1,18 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+  <p>Runs</p>
+
+  <ul>
+      {% for run in runs %}
+      <li>
+          <a href="{% url 'run_stats:run' run.id %}">{{ run }}</a>
+      </li>
+
+      {% empty %}
+        <li>No runs have been added yet.</li>
+      {% endfor %}
+
+  </ul>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+  <p>Run {{ run }}</p>
+
+    <p>You ran on {{ run.date|date:'Y M d' }} </p>
+
+    <p>Splits:</p>
+    {% for split in splits %}
+    
+    <li>
+        {{ split.time|time:'i:s' }}
+    </li>
+
+    {% empty %}
+    <p>No splits for run: {{ run }}</p>
+    </ul>
+
+    {% endfor %}
+
+{% endblock content %}

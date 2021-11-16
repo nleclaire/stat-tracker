@@ -15,7 +15,7 @@ class Run(models.Model):
 
 class Split(models.Model):
     """A time split for each mile on the run."""
-    date = models.DateTimeField()
+    date = models.DateField()
     time = models.TimeField()
     length = models.DecimalField(max_digits=3, decimal_places=2)
     run = models.ForeignKey(Run, on_delete=models.CASCADE)
