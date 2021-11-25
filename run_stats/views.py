@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from .models import Run
+from .forms import RunForm
 
 def index(request):
     """The home page for stat-tracker."""
@@ -19,3 +21,18 @@ def run(request, run_id):
 
     context = {'run': run, 'splits': splits}
     return render(request, 'run_stats/run.html', context)
+
+def new_run(request):
+    """Add a new run."""
+    if request.method != 'POST':
+        form = RunForm(initial={'time': '00:'})
+    else:
+        # POST data submitted; process data
+        form = RunForm(request.POST)
+        if form.is_valid():
+            new_run = form.save(commit=False)
+            new_run.save()
+            return HttpResponseRedirect(reverse('run_stats:runs'))
+    
+    context = {'form': form}
+    return render(request, 'run_stats/new_run.html', context)

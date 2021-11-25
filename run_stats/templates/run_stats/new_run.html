@@ -1,0 +1,11 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+  <p>Add a new run:</p>
+
+  <form action="{% url 'run_stats:new_run' %}" method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button name="submit">add run</button>
+  </form>
+{% endblock content %}
