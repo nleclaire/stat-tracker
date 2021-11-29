@@ -1,0 +1,11 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+  <p>Edit run:</p>
+
+  <form action="{% url 'run_stats:edit_run' run.id %}" method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button name="submit">save</button>
+  </form>
+{% endblock content %}

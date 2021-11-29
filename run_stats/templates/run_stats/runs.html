@@ -6,7 +6,8 @@
   <ul>
       {% for run in runs %}
       <li>
-          <a href="{% url 'run_stats:run' run.id %}">{{ run }}</a>
+          <a href="{% url 'run_stats:run' run.id %}">{{ run }}</a> - 
+          <a href="{% url 'run_stats:edit_run' run.id %}">Edit run</a>
       </li>
 
       {% empty %}

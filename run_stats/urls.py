@@ -14,4 +14,7 @@ urlpatterns = [
 
     # Page to add a new Run
     path('runs/new_run', views.new_run, name="new_run"),
+
+    # Page to edit a Run
+    path('runs/edit_run/<int:run_id>', views.edit_run, name="edit_run"),
 ]
