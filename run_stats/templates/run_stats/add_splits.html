@@ -1,0 +1,25 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+
+<p>Splits:</p>
+
+<div >
+
+    {% if splits %}
+    {% for split in splits %}
+    <form action="{% url 'run_stats:add_splits' run.id %}" method="post" id="split-form">
+        {% csrf_token %}
+        <input type="input" value="{{ split.time|time:'i:s' }}" name="split-times"></input>
+        {{form.as_p}}
+        <br>
+    </form>
+    {% endfor %}
+    <button name="submit" onsubmit="submitForms()">save</button>
+    {% endif %}
+    
+    <p>No splits have been added yet.</p>
+    <button name="add_split" type="button" onclick="addSplit()">Add split</button>
+    
+</div>
+{% endblock content %}

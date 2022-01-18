@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Run
-from .forms import RunForm
+from .forms import RunForm, SplitForm
 
 def index(request):
     """The home page for stat-tracker."""
@@ -48,3 +48,23 @@ def edit_run(request, run_id):
 
     context = {'form': form, 'run': run}
     return render(request, 'run_stats/edit_run.html', context)
+
+def add_splits(request, run_id):
+    """Add splits to an existing run."""
+    run = Run.objects.get(id=run_id)
+    splits = run.split_set.order_by('-date')
+    forms = []
+    if request.method != 'POST':
+        for split in splits:
+            split_form = SplitForm(initial={'time': str(split.time) + '00:'})
+            forms.append(split_form)
+    else:
+        forms = request.POST.getList('split')
+        for form in forms:
+            # form = SplitForm(instance=thing)
+            if form.is_valid():
+                form.save()
+
+    context = {'forms': forms, 'run': run, 'splits': splits}
+
+    return render(request, 'run_stats/add_splits.html', context)
