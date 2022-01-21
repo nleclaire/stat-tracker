@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import Run
 from .forms import RunForm, SplitForm
@@ -43,11 +44,16 @@ def edit_run(request, run_id):
         # POST data submitted; process data
         form = RunForm(instance=run, data=request.POST)
         if form.is_valid:
-            run_form.save()
+            form.save()
             return HttpResponseRedirect(reverse('run_stats:runs'))
 
     context = {'form': form, 'run': run}
     return render(request, 'run_stats/edit_run.html', context)
+
+def delete_run(request, run_id):
+    """Delete an existing run."""
+    if Run.objects.filter(id=run_id).delete():
+        return HttpResponseRedirect(reverse('run_stats:runs'))
 
 def add_splits(request, run_id):
     """Add splits to an existing run."""
