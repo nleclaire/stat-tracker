@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import Run
+from django.forms.formsets import formset_factory, BaseFormSet
+from django.forms import inlineformset_factory, modelformset_factory
+from .models import Run, Split
 from .forms import RunForm, SplitForm
 
 def index(request):
@@ -59,18 +61,31 @@ def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
     splits = run.split_set.order_by('-date')
-    forms = []
+    SplitFormSetFactory = modelformset_factory(Split, form=SplitForm, extra=0)
+    formset = SplitFormSetFactory(request.POST or None, queryset=splits)
     if request.method != 'POST':
-        for split in splits:
-            split_form = SplitForm(initial={'time': str(split.time) + '00:'})
-            forms.append(split_form)
+        if not splits:
+            formset = SplitFormSetFactory()
+        else:
+            formset = SplitFormSetFactory(
+                initial=[
+                    {
+                        'date': split.date, 
+                        'time': split.time, 
+                        'length': split.length, 
+                        'run': split.run
+                    } for split in splits
+                ]
+            )
     else:
-        forms = request.POST.getList('split')
-        for form in forms:
-            # form = SplitForm(instance=thing)
-            if form.is_valid():
+        if formset.is_valid():
+            for form in formset:
                 form.save()
 
-    context = {'forms': forms, 'run': run, 'splits': splits}
+    context = {
+        'formset': formset,
+        'splits': splits,
+        'run': run
+    }
 
     return render(request, 'run_stats/add_splits.html', context)

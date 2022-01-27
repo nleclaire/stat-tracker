@@ -2,28 +2,25 @@
 
 {% block content %}
 
-<p>Splits:</p>
-
-<div id="split-form">
-
-    {% if splits %}
-    {% for split in splits %}
-    <form action="{% url 'run_stats:add_splits' run.id %}" method="post">
-        {% csrf_token %}
-        <input type="input" value="{{ split.time|time:'i:s' }}" name="split-times"></input>
-        {{form.as_p}}
-        <br>
-    </form>
+<p>Splits:</p>    
     
-    {% endfor %}
-    <button name="submit" onsubmit="submitForms()">save</button>
-    
-    {% else %}
-    <p>No splits have been added yet.</p>
-
+<form class ="split-form" action="{% url 'run_stats:add_splits' run.id %}" method="post">
+    {% csrf_token %}
+    {% if formset %}
+    {{ formset.management_form }}
+    <div id="split-form-list">
+        {{ formset.as_p }}
+        <button type="submit" onsubmit="submitForms()">save</button>
+        <button name="add_split" type="button" onclick="addSplit()">Add split</button>
+    </div>
     {% endif %}
-        
-</div>
+            
+</form>
 
-<button name="add_split" type="button" onclick="addSplit()">Add split</button>
+    <div class="hidden" id="empty-form" value="" name="split-times">
+        {% if formset %}
+            {{ formset.empty_form }}
+        {% endif %}
+    </div>
+    
 {% endblock content %}

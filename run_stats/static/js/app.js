@@ -1,18 +1,21 @@
+
 submitForms = () => {
     for (let i = 0; i < document.forms.length; i++) {
+        console.log(document.forms[i])
         document.forms[i].submit()
     }
 }
 
 addSplit = () => {
-    const form = document.querySelector("#split-form");
-    console.log(form);
-    // form.innerHTML = "";
-    form.innerHTML += `
-        <form action="{% url 'run_stats:add_splits' run.id %}" method="post">
-        <input type="input" name="split-times"></input>
-        <br>
-        </form>
-    `
-    console.log("addSplit button pressed")
+    const emptyForm = document.getElementById("empty-form").cloneNode(true);
+
+    emptyForm.setAttribute("class", "split-form");
+    // const splitForm = document.getElementById("split-form");
+
+    const splitFormList = document.getElementById("split-form-list");
+
+    console.log(splitFormList);
+    splitFormList.append(emptyForm);
+    console.log(emptyForm);
+
 }

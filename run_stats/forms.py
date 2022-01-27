@@ -1,5 +1,6 @@
 from django import forms
 from .models import Run, Split
+from django.forms.formsets import formset_factory, BaseFormSet
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -18,5 +19,8 @@ class SplitForm(forms.ModelForm):
         fields = ['date', 'time', 'length', 'run']
         # labels = {'time': '00:'}
         widgets = {
-            'time': forms.TimeField()
+            'date': DateInput(),
+            'time': forms.TimeInput(format='%H:%M:%S:%I')
         }
+    def __str__(self):
+        return str(self["time"])

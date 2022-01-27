@@ -14,9 +14,9 @@
 
     {% empty %}
     <p>No splits for run: {{ run }}</p>
-    <a href="{% url 'run_stats:add_splits' run.id %}">Add splits</p>
-    </ul>
-
-    {% endfor %}
+  </ul>
+  
+  {% endfor %}
+  <a href="{% url 'run_stats:add_splits' run.id %}">Add splits</p>
 
 {% endblock content %}
