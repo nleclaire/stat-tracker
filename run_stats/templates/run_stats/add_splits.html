@@ -2,25 +2,24 @@
 
 {% block content %}
 
-<p>Splits:</p>    
-    
-<form class ="split-form" action="{% url 'run_stats:add_splits' run.id %}" method="post">
-    {% csrf_token %}
-    {% if formset %}
-    {{ formset.management_form }}
-    <div id="split-form-list">
-        {{ formset.as_p }}
-        <button type="submit" onsubmit="submitForms()">save</button>
-        <button name="add_split" type="button" onclick="addSplit()">Add split</button>
-    </div>
-    {% endif %}
-            
-</form>
+    <p>Splits:</p>
 
-    <div class="hidden" id="empty-form" value="" name="split-times">
+    <form class="split-form" action="{% url 'run_stats:add_splits' run.id %}" method="post" name="split-times">
+        {% csrf_token %}
         {% if formset %}
-            {{ formset.empty_form }}
+            {{ formset.management_form }}
+            <div id="split-form-list">
+                {{ formset.as_p }}
+            </div>
+        {% endif %}
+        <button type="button" onclick="submitForms()">save</button>
+        <button name="add_split" type="button">Add split</button>
+    </form>
+
+    <div class="hidden" id="empty-form">
+        {% if formset %}
+            {{ formset.as_p }}
         {% endif %}
     </div>
-    
+
 {% endblock content %}

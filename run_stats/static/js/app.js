@@ -1,3 +1,6 @@
+document.getElementById("add_split")
+    .addEventListener("click", (e) => addSplit(e))
+
 
 submitForms = () => {
     for (let i = 0; i < document.forms.length; i++) {
@@ -6,7 +9,9 @@ submitForms = () => {
     }
 }
 
-addSplit = () => {
+addSplit = (e) => {
+    e.preventDefault();
+
     const emptyForm = document.getElementById("empty-form").cloneNode(true);
 
     emptyForm.setAttribute("class", "split-form");
@@ -18,4 +23,5 @@ addSplit = () => {
     splitFormList.append(emptyForm);
     console.log(emptyForm);
 
+    return false;
 }
