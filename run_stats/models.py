@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Run(models.Model):
     """A run the user wants to track."""
     date = models.DateField()
@@ -12,6 +13,7 @@ class Run(models.Model):
     def __str__(self):
         """Return a string representation of the model."""
         return str(self.distance) + " miles - " + str(self.time)[3:] + " minutes"
+
 
 class Split(models.Model):
     """A time split for each mile on the run."""

@@ -1,14 +1,16 @@
+from django.forms import modelformset_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import HttpResponseRedirect
-from django.forms.formsets import formset_factory, BaseFormSet
-from django.forms import inlineformset_factory, modelformset_factory
+
+from .forms import RunForm
 from .models import Run, Split
-from .forms import RunForm, SplitForm
+
 
 def index(request):
     """The home page for stat-tracker."""
     return render(request, "run_stats/index.html")
+
 
 def runs(request):
     """Return all runs."""
@@ -16,12 +18,14 @@ def runs(request):
     context = {'runs': runs}
     return render(request, "run_stats/runs.html", context)
 
+
 def run(request, run_id):
     """Show a single run and its splits."""
     run = Run.objects.get(id=run_id)
     splits = run.split_set.order_by('-date')
     context = {'run': run, 'splits': splits}
     return render(request, 'run_stats/run.html', context)
+
 
 def new_run(request):
     """Add a new run."""
@@ -33,9 +37,10 @@ def new_run(request):
             new_run = form.save(commit=False)
             new_run.save()
             return HttpResponseRedirect(reverse('run_stats:runs'))
-    
+
     context = {'form': form}
     return render(request, 'run_stats/new_run.html', context)
+
 
 def edit_run(request, run_id):
     """Edit an existing run."""
@@ -43,7 +48,6 @@ def edit_run(request, run_id):
     if request.method != 'POST':
         form = RunForm(instance=run)
     else:
-        # POST data submitted; process data
         form = RunForm(instance=run, data=request.POST)
         if form.is_valid:
             form.save()
@@ -52,35 +56,30 @@ def edit_run(request, run_id):
     context = {'form': form, 'run': run}
     return render(request, 'run_stats/edit_run.html', context)
 
+
 def delete_run(request, run_id):
     """Delete an existing run."""
     if Run.objects.filter(id=run_id).delete():
         return HttpResponseRedirect(reverse('run_stats:runs'))
 
+
 def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
     splits = run.split_set.order_by('-date')
-    SplitFormSetFactory = modelformset_factory(Split, form=SplitForm, extra=0)
-    formset = SplitFormSetFactory(request.POST or None, queryset=splits)
+    SplitFormSetFactory = modelformset_factory(Split, fields=('date', 'time', 'length', 'run'))
+    formset = SplitFormSetFactory(request.POST or None)
     if request.method != 'POST':
         if not splits:
-            formset = SplitFormSetFactory()
+            formset = formset.empty_form
         else:
-            formset = SplitFormSetFactory(
-                initial=[
-                    {
-                        'date': split.date, 
-                        'time': split.time, 
-                        'length': split.length, 
-                        'run': split.run
-                    } for split in splits
-                ]
-            )
+            formset = SplitFormSetFactory(queryset=splits)
+
     else:
+        formset = SplitFormSetFactory(request.POST)
         if formset.is_valid():
-            for form in formset:
-                form.save()
+            formset.save()
+        return HttpResponseRedirect(reverse('run_stats:run', kwargs={'run_id': run.id}))
 
     context = {
         'formset': formset,

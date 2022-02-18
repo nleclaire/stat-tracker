@@ -1,0 +1,15 @@
+{% extends "run_stats/base.html" %}
+
+{% block content %}
+
+    <form method="POST" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button name="submit">register</button>
+
+        <input type="hidden" name="next" value="{% url 'run_stats:index' %}"/>
+
+    </form>
+
+{% endblock content %}
