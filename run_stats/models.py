@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -9,6 +10,7 @@ class Run(models.Model):
     average_speed = models.DecimalField(max_digits=3, decimal_places=1)
     calories_burned = models.IntegerField()
     steps = models.IntegerField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         """Return a string representation of the model."""

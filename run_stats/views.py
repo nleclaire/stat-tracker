@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -16,7 +16,7 @@ def index(request):
 @login_required
 def runs(request):
     """Return all runs."""
-    runs = Run.objects.order_by('-date')
+    runs = Run.objects.filter(owner=request.user).order_by('-date')
     context = {'runs': runs}
     return render(request, "run_stats/runs.html", context)
 
@@ -25,6 +25,7 @@ def runs(request):
 def run(request, run_id):
     """Show a single run and its splits."""
     run = Run.objects.get(id=run_id)
+    validate_user(request, run)
     splits = run.split_set.order_by('-date')
     context = {'run': run, 'splits': splits}
     return render(request, 'run_stats/run.html', context)
@@ -39,6 +40,7 @@ def new_run(request):
         form = RunForm(request.POST)
         if form.is_valid():
             new_run = form.save(commit=False)
+            new_run.owner = request.user
             new_run.save()
             return HttpResponseRedirect(reverse('run_stats:runs'))
 
@@ -50,6 +52,7 @@ def new_run(request):
 def edit_run(request, run_id):
     """Edit an existing run."""
     run = Run.objects.get(id=run_id)
+    validate_user(request, run)
     if request.method != 'POST':
         form = RunForm(instance=run)
     else:
@@ -65,7 +68,9 @@ def edit_run(request, run_id):
 @login_required
 def delete_run(request, run_id):
     """Delete an existing run."""
-    if Run.objects.filter(id=run_id).delete():
+    run = Run.objects.filter(id=run_id)
+    validate_user(request, run)
+    if run.delete():
         return HttpResponseRedirect(reverse('run_stats:runs'))
 
 
@@ -73,6 +78,7 @@ def delete_run(request, run_id):
 def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
+    validate_user(request, run)
     splits = run.split_set.order_by('-date')
     SplitFormsetFactory = modelformset_factory(Split, fields=('date', 'time', 'length', 'run'), form=SplitForm)
     if request.method != 'POST':
@@ -95,3 +101,8 @@ def add_splits(request, run_id):
     }
 
     return render(request, 'run_stats/add_splits.html', context)
+
+
+def validate_user(request, run):
+    if run.owner != request.user:
+        raise Http404
