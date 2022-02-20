@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -12,6 +13,7 @@ def index(request):
     return render(request, "run_stats/index.html")
 
 
+@login_required
 def runs(request):
     """Return all runs."""
     runs = Run.objects.order_by('-date')
@@ -19,6 +21,7 @@ def runs(request):
     return render(request, "run_stats/runs.html", context)
 
 
+@login_required
 def run(request, run_id):
     """Show a single run and its splits."""
     run = Run.objects.get(id=run_id)
@@ -27,6 +30,7 @@ def run(request, run_id):
     return render(request, 'run_stats/run.html', context)
 
 
+@login_required
 def new_run(request):
     """Add a new run."""
     if request.method != 'POST':
@@ -42,6 +46,7 @@ def new_run(request):
     return render(request, 'run_stats/new_run.html', context)
 
 
+@login_required
 def edit_run(request, run_id):
     """Edit an existing run."""
     run = Run.objects.get(id=run_id)
@@ -57,12 +62,14 @@ def edit_run(request, run_id):
     return render(request, 'run_stats/edit_run.html', context)
 
 
+@login_required
 def delete_run(request, run_id):
     """Delete an existing run."""
     if Run.objects.filter(id=run_id).delete():
         return HttpResponseRedirect(reverse('run_stats:runs'))
 
 
+@login_required
 def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
