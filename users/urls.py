@@ -11,5 +11,5 @@ urlpatterns = [
     # Logout page
     path('users/', views.logout_view, name='logout'),
     # Registration form
-    path('uesrs/', views.register, name='register')
+    path('register', views.register, name='register')
 ]

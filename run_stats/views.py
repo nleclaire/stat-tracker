@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .forms import RunForm
+from .forms import RunForm, SplitForm
 from .models import Run, Split
 
 
@@ -67,18 +67,18 @@ def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
     splits = run.split_set.order_by('-date')
-    SplitFormSetFactory = modelformset_factory(Split, fields=('date', 'time', 'length', 'run'))
-    formset = SplitFormSetFactory(request.POST or None)
+    SplitFormsetFactory = modelformset_factory(Split, fields=('date', 'time', 'length', 'run'), form=SplitForm)
     if request.method != 'POST':
         if not splits:
-            formset = formset.empty_form
+            formset = SplitFormsetFactory()
         else:
-            formset = SplitFormSetFactory(queryset=splits)
+            formset = SplitFormsetFactory(queryset=splits)
 
     else:
-        formset = SplitFormSetFactory(request.POST)
-        if formset.is_valid():
-            formset.save()
+        formset = SplitFormsetFactory(request.POST, queryset=splits)
+        for form in formset:
+            if form.is_valid():
+                form.save()
         return HttpResponseRedirect(reverse('run_stats:run', kwargs={'run_id': run.id}))
 
     context = {

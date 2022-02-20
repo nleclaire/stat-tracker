@@ -1,12 +1,7 @@
-document.getElementById("add_split")
-    .addEventListener("click", (e) => addSplit(e))
 
-
-submitForms = () => {
-    for (let i = 0; i < document.forms.length; i++) {
-        console.log(document.forms[i])
-        document.forms[i].submit()
-    }
+submitForms = (e) => {
+    e.preventDefault();
+    document.split_form.submit();
 }
 
 addSplit = (e) => {

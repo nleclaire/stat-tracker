@@ -4,16 +4,19 @@
 
     <p>Splits:</p>
 
-    <form class="split-form" action="{% url 'run_stats:add_splits' run.id %}" method="post" name="split-times">
+    <form class="split-form" name="split_form" action="{% url 'run_stats:add_splits' run.id %}" method="post"
+          name="split-times">
         {% csrf_token %}
+        {{ formset.management_form }}
         {% if formset %}
-            {{ formset.management_form }}
             <div id="split-form-list">
-                {{ formset.as_p }}
+                {% for form in formset.forms %}
+                    {{ form.as_p }}
+                {% endfor %}
             </div>
         {% endif %}
-        <button type="button" onclick="submitForms()">save</button>
-        <button name="add_split" type="button">Add split</button>
+        <button type="button" id="save-btn" onclick="submitForms(event)">save</button>
+        <button id="add-split" type="button" onclick="addSplit(event)">Add split</button>
     </form>
 
     <div class="hidden" id="empty-form">
