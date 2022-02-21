@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 3rd party apps
+    'bootstrap5',
+    'crispy_forms',
+
     # My apps
     'run_stats',
     'users'
@@ -117,12 +121,14 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/users/login'
+
+# Django-crispy-forms template pack
+CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

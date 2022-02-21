@@ -7,3 +7,7 @@
 .hidden {
     display: none;
 }
+
+.run-form {
+    max-width: 300px;
+}

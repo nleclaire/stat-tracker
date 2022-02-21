@@ -1,11 +1,13 @@
 {% extends "run_stats/base.html" %}
-
+{% load bootstrap5 %}
 {% block content %}
-  <p>Add a new run:</p>
+    <p>Add a new run:</p>
 
-  <form action="{% url 'run_stats:new_run' %}" method="post">
-      {% csrf_token %}
-      {{form.as_p}}
-      <button name="submit">add run</button>
-  </form>
+    <form style="max-width: 300px; margin: 10px; padding: 10px" action="{% url 'run_stats:new_run' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name="submit">add run</button>
+        {% endbuttons %}
+    </form>
 {% endblock content %}

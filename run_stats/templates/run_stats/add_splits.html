@@ -4,8 +4,8 @@
 
     <p>Splits:</p>
 
-    <form class="split-form" name="split_form" action="{% url 'run_stats:add_splits' run.id %}" method="post"
-          name="split-times">
+    <form class="split-form" name="split_form" enctype="multipart/form-data"
+          action="{% url 'run_stats:add_splits' run.id %}" method="post">
         {% csrf_token %}
         {{ formset.management_form }}
         {% if formset %}
