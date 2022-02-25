@@ -1,14 +1,16 @@
 {% extends "run_stats/base.html" %}
 {% load bootstrap5 %}
 {% block content %}
-    <p>Edit run:</p>
+    <h1 class="header">Edit run:</h1>
 
-    <form style="max-width: 300px; margin: 10px; padding: 10px" action="{% url 'run_stats:edit_run' run.id %}"
+    <form class="run-form" action="{% url 'run_stats:edit_run' run.id %}"
           method="post">
         {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button name="submit">save</button>
-        {% endbuttons %}
+        <div class="card border">
+            {% bootstrap_form form %}
+        </div>
+        <div style="text-align: center">
+            {% buttons submit='save' %}{% endbuttons %}
+        </div>
     </form>
 {% endblock content %}

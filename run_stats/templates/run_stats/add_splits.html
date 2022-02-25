@@ -1,27 +1,36 @@
 {% extends "run_stats/base.html" %}
-
+{% load bootstrap5 %}
 {% block content %}
 
     <p>Splits:</p>
 
-    <form class="split-form" name="split_form" enctype="multipart/form-data"
-          action="{% url 'run_stats:add_splits' run.id %}" method="post">
-        {% csrf_token %}
-        {{ formset.management_form }}
-        {% if formset %}
-            <div id="split-form-list">
-                {% for form in formset.forms %}
-                    {{ form.as_p }}
-                {% endfor %}
+    <div class="form-container">
+        <form class="split-form" name="split_form" enctype="multipart/form-data"
+              action="{% url 'run_stats:add_splits' run.id %}" method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% if formset %}
+                <div id="split-form-list" class="split-form-list form-group">
+                    {% for form in formset.forms %}
+                        <div class="card split-form border">
+                            {% bootstrap_form form %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div style="text-align: center">
+                <button class="btn btn-primary" type="button" id="save-btn" onclick="submitForms(event)">save</button>
+                <button class="btn btn-secondary" id="add-split" type="button" onclick="addSplit(event)">Add split
+                </button>
             </div>
-        {% endif %}
-        <button type="button" id="save-btn" onclick="submitForms(event)">save</button>
-        <button id="add-split" type="button" onclick="addSplit(event)">Add split</button>
-    </form>
+        </form>
+    </div>
+
 
     <div class="hidden" id="empty-form">
         {% if formset %}
-            {{ formset.as_p }}
+            {{ formset.empty_form }}
         {% endif %}
     </div>
 

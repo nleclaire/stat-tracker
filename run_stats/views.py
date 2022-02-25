@@ -15,7 +15,7 @@ def index(request):
 
 @login_required
 def runs(request):
-    """Return all runs."""
+    """Return all runs related to a user."""
     runs = Run.objects.filter(owner=request.user).order_by('-date')
     context = {'runs': runs}
     return render(request, "run_stats/runs.html", context)
@@ -88,7 +88,7 @@ def add_splits(request, run_id):
             formset = SplitFormsetFactory(queryset=splits)
 
     else:
-        formset = SplitFormsetFactory(request.POST, queryset=splits)
+        formset = SplitFormsetFactory(request.POST)
         for form in formset:
             if form.is_valid():
                 form.save()
