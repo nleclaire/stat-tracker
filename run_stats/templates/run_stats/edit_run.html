@@ -1,6 +1,7 @@
 {% extends "run_stats/base.html" %}
 {% load bootstrap5 %}
 {% block content %}
+
     <h1 class="header">Edit run:</h1>
 
     <form class="run-form" action="{% url 'run_stats:edit_run' run.id %}"

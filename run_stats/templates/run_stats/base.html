@@ -1,21 +1,13 @@
-{% load bootstrap5 %}
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css"
-          integrity="sha384-9+PGKSqjRdkeAU7Eu4nkJU8RFaH8ace8HGXnkiKMP9I9Te0GJ4/km3L1Z8tXigpG" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+{% include 'run_stats/head.html' %}
 <body>
-{% include 'run_stats/nav.html' %}
-{% block content %} {% endblock content %}
+<div class="page-header">
+    {% include 'run_stats/nav.html' %}
+    {% block header %}{% endblock header %}
+</div>
+<div>
+    {% block content %}{% endblock content %}
+</div>
 </body>
 </html>
