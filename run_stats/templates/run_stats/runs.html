@@ -1,22 +1,23 @@
 {% extends "run_stats/base.html" %}
 
 {% block content %}
-  <p>Runs</p>
+    <p>Runs</p>
 
-  <ul>
-      {% for run in runs %}
-      <li>
-          <a href="{% url 'run_stats:run' run.id %}">{{ run }}</a> - 
-          <a href="{% url 'run_stats:edit_run' run.id %}">Edit run</a> - 
-          <a href="{% url 'run_stats:delete_run' run.id %}">Delete run</a>
-      </li>
+    <ul>
+        {% for run in runs %}
+            <li>
+                <a href="{% url 'run_stats:run' run.id %}">{{ run.date }} - {{ run.distance }} miles
+                    - {{ run.time|time:'H:i:s' }}</a> -
+                <a href="{% url 'run_stats:edit_run' run.id %}"><i class="bi bi-pencil-square"></i>Edit run</a> -
+                <a href="{% url 'run_stats:delete_run' run.id %}">Delete run</a>
+            </li>
 
-      {% empty %}
-        <li>No runs have been added yet.</li>
-      {% endfor %}
+        {% empty %}
+            <li>No runs have been added yet.</li>
+        {% endfor %}
 
-  </ul>
+    </ul>
 
-  <a href="{% url 'run_stats:new_run' %}">Add a new run:</a>
+    <a href="{% url 'run_stats:new_run' %}">Add a new run:</a>
 
 {% endblock content %}
