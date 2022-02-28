@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from .views import register
+from users.views import register
 
 
 class RegisterTests(TestCase):
@@ -24,6 +24,13 @@ class RegisterTests(TestCase):
     def test_contains_form(self):
         form = self.response.context.get('form')
         self.assertIsInstance(form, UserCreationForm)
+
+    def test_form_inputs(self):
+        """Form should only have 5 inputs. csrf, username, password1, password2, and next"""
+        self.assertContains(self.response, '<input', 5)
+        self.assertContains(self.response, 'type="text"', 1)
+        self.assertContains(self.response, 'type="password"', 2)
+        self.assertContains(self.response, 'type="hidden"', 2)
 
 
 class SuccessfulRegisterTests(TestCase):

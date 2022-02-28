@@ -1,19 +1,29 @@
 {% extends "run_stats/base.html" %}
+{% load bootstrap5 %}
 
 {% block content %}
 
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Log in</h3>
+                    {% if form.errors %}
+                        <p>Your username and password didn't match. Please try again.</p>
+                    {% endif %}
 
-    <form method="POST" action="{% url 'users:login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
+                    <form method="POST" action="{% url 'users:login' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
 
-        <button name="submit">log in</button>
+                        {% buttons submit='Log in' %} {% endbuttons %}
 
-        <input type="hidden" name="next" value="{% url 'run_stats:index' %}"/>
+                        <input type="hidden" name="next" value="{% url 'run_stats:index' %}"/>
 
-    </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock content %}
