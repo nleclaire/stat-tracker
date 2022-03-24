@@ -125,7 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-LOGIN_URL = '/users/login'
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Django-crispy-forms template pack
 CRISPY_TEMPLATE_PACK = 'bootstrap'
