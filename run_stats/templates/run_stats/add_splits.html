@@ -1,4 +1,4 @@
-{% extends "run_stats/base.html" %}
+{% extends "run_stats/run.html" %}
 {% load bootstrap5 %}
 {% block content %}
 
@@ -12,9 +12,32 @@
             {% if formset %}
                 <div id="split-form-list" class="split-form-list form-group">
                     {% for form in formset.forms %}
-                        <div class="card split-form border">
-                            {% bootstrap_form form %}
-                        </div>
+
+                        {{ form.non_field_errors }}
+
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
+
+                        {% for field in form %}
+                            <tr>
+                                <td>
+                                    {% if field.errors %}
+                                        <ul>
+                                            {% for error in field.errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    {% bootstrap_field field %}
+                                    {% if field.help_text %}
+                                        <br/>{{ field.help_text }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
                     {% endfor %}
                 </div>
             {% endif %}

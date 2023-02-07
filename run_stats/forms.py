@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Run, Split
 
 
@@ -18,7 +19,7 @@ class RunForm(forms.ModelForm):
 class SplitForm(forms.ModelForm):
     class Meta:
         model = Split
-        fields = ['date', 'time', 'length', 'run']
+        fields = ['time', 'length', 'run']
         # labels = {'time': '00:'}
         widgets = {
             'date': DateInput(),

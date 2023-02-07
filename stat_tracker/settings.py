@@ -130,6 +130,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # Django-crispy-forms template pack
 CRISPY_TEMPLATE_PACK = 'bootstrap'
+# CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

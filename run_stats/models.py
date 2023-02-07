@@ -19,10 +19,11 @@ class Run(models.Model):
 
 class Split(models.Model):
     """A time split for each mile on the run."""
-    date = models.DateField()
+    created_date = models.DateField(auto_now_add=True)
     time = models.TimeField()
     length = models.DecimalField(max_digits=3, decimal_places=2)
     run = models.ForeignKey(Run, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         """Return a string representation of the model."""

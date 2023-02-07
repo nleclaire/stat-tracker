@@ -26,7 +26,7 @@ def run(request, run_id):
     """Show a single run and its splits."""
     run = Run.objects.get(id=run_id)
     validate_user(request, run)
-    splits = run.split_set.order_by('-date')
+    splits = run.split_set.order_by('-created_date')
     context = {'run': run, 'splits': splits}
     return render(request, 'run_stats/run.html', context)
 
@@ -79,19 +79,21 @@ def add_splits(request, run_id):
     """Add splits to an existing run."""
     run = Run.objects.get(id=run_id)
     validate_user(request, run)
-    splits = run.split_set.order_by('-date')
-    SplitFormsetFactory = modelformset_factory(Split, fields=('date', 'time', 'length', 'run'), form=SplitForm)
+    print('run_id: ', run_id)
+    print('run.split_set: ', run.split_set)
+    splits = run.split_set.order_by('-created_date')
+    SplitFormsetFactory = modelformset_factory(Split, fields=('time', 'length', 'run'),
+                                               form=SplitForm, can_delete=True, can_order=True)
     if request.method != 'POST':
-        if not splits:
-            formset = SplitFormsetFactory()
-        else:
-            formset = SplitFormsetFactory(queryset=splits)
-
+        formset = SplitFormsetFactory(queryset=splits)
     else:
         formset = SplitFormsetFactory(request.POST)
-        for form in formset:
-            if form.is_valid():
-                form.save()
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid() and form.has_changed():
+                    split = form.save(commit=False)
+                    split.owner = request.user
+                    split.save()
         return HttpResponseRedirect(reverse('run_stats:run', kwargs={'run_id': run.id}))
 
     context = {
