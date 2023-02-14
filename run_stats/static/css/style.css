@@ -9,6 +9,12 @@
     margin: auto;
 }
 
+.split-form-container {
+    border: 2px black solid;
+    border-radius: 16px;
+    padding: 15px;
+}
+
 .hidden {
     display: none;
 }
