@@ -1,9 +1,37 @@
 {% extends "run_stats/base.html" %}
-
+{% load static %}
 
 {% block header %}
-    <div class="jumbotron">
-        <h1>Welcome to stat-tracker.</h1>
+    <h1>Welcome to stat-tracker.</h1>
+    <div class="slide-wrapper">
+        <ol class="slide-indexes">
+            <a href="#slide-0">
+                <button class="index-navigator"></button>
+            </a>
+            <a href="#slide-1">
+                <button class="index-navigator"></button>
+            </a>
+            <a href="#slide-2">
+                <button class="index-navigator"></button>
+            </a>
+        </ol>
+        <div class="slides-container">
+            <button class="carousel-button prev" onclick="scrollRight()">
+                <span class="icon">
+                <i class="bi bi-arrow-left"></i>
+                </span>
+            </button>
+            <img id="slide-0" data-index="0" class="slide active" src="{% static 'images/running_man.jpeg' %}"
+                 alt="gotta go fast">
+            <img id="slide-1" data-index="1" class="slide" src="{% static 'images/marathon_image.jpeg' %}"
+                 alt="run with friends">
+            <img id="slide-2" data-index="2" class="slide" src="{% static 'images/running.jpeg' %}" alt="rin ran run">
+            <button class="carousel-button next" onclick="navigateToRight()">
+                <span class="icon">
+                <i class="bi bi-arrow-right"></i>
+                </span>
+            </button>
+        </div>
     </div>
 {% endblock header %}
 

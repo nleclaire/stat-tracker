@@ -23,7 +23,7 @@ class SplitForm(forms.ModelForm):
         # labels = {'time': '00:'}
         widgets = {
             'date': DateInput(),
-            'time': forms.TimeInput(format='%H:%M:%S')
+            'time': forms.TimeInput(format='%M:%S')
         }
 
     def __str__(self):
