@@ -2,6 +2,18 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Schedule(models.Model):
+    """A schedule to track your progress over time"""
+    created_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Return a string representation of the model."""
+        return str(self.start_date) + " to " + str(self.end_date)
+
+
 class Run(models.Model):
     """A run the user wants to track."""
     date = models.DateField()
@@ -11,6 +23,7 @@ class Run(models.Model):
     calories_burned = models.IntegerField()
     steps = models.IntegerField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         """Return a string representation of the model."""
