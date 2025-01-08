@@ -105,6 +105,16 @@ def add_splits(request, run_id):
     return render(request, 'run_stats/add_splits.html', context)
 
 
+def history(request):
+    user = request.user
+    print(f"User={user}, id={user.id}", user, user.id)
+    runs = Run.objects.filter(owner=user.id)
+    print(runs)
+
+
+    return render(request, 'run_stats/history.html')
+
+
 def validate_user(request, run):
     if run.owner != request.user:
         raise Http404

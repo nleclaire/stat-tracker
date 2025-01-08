@@ -22,4 +22,7 @@ urlpatterns = [
     
     # Page to add Splits
     path('runs/<int:run_id>/add_splits', views.add_splits, name="add_splits"),
+
+    # Page to view history
+    path('runs/history', views.history, name="history"),
 ]
