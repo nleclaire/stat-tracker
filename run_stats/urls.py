@@ -22,4 +22,10 @@ urlpatterns = [
     
     # Page to add Splits
     path('runs/<int:run_id>/add_splits', views.add_splits, name="add_splits"),
+
+    # Page to view schedules
+    path('schedules', views.get_schedules, name="schedules"),
+
+    # Page to view schedule
+    path('schedule/<int:schedule_id>', views.get_schedule, name="get_schedule"),
 ]

@@ -1,0 +1,22 @@
+.schedule-container {
+    display: flex;
+    margin: 20px;
+}
+
+.schedule-card {
+    border: 10px outset slategrey;
+    width: 400px;
+    height: 200px;
+    margin: 20px;
+    border-radius: 25px;
+    padding: 20px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.schedule-card:hover {
+    border: 12px outset slategrey;
+    -webkit-box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    -moz-box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    transform: translate(0px, -5px)
+}

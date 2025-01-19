@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .forms import RunForm, SplitForm
-from .models import Run, Split
+from .models import Run, Split, Schedule
 
 
 def index(request):
@@ -103,6 +103,23 @@ def add_splits(request, run_id):
     }
 
     return render(request, 'run_stats/add_splits.html', context)
+
+
+@login_required
+def get_schedules(request):
+    """Get a user's schedules."""
+    schedules = Schedule.objects.filter(owner=request.user).order_by('-start_date')
+    print(schedules)
+    context = {
+        'schedules': schedules
+    }
+    return render(request, 'schedule/schedules.html', context)
+
+
+@login_required
+def get_schedule(request, schedule_id):
+    context = {}
+    return render(request, 'schedule/schedule.html', context)
 
 
 def validate_user(request, run):
